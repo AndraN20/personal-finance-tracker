@@ -1,0 +1,14 @@
+# Build output
+/server
+/server.exe
+/bin/
+
+# Test and coverage output
+*.test
+*.out
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
