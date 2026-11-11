@@ -1,11 +1,15 @@
-# Build output
+# Build artefacts. The repository holds sources, not results.
+/app
 /server
-/server.exe
 /bin/
-
-# Test and coverage output
+*.exe
 *.test
-*.out
+coverage/
+
+# Secrets. Never commit credentials.
+.env
+*.pem
+*.key
 
 # Editors and OS
 .vscode/
