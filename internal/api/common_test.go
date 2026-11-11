@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/AndraN20/personal-finance-tracker/internal/store"
+	"atad-project/internal/store"
 )
 
 func do(t *testing.T, method, path string) *httptest.ResponseRecorder {
@@ -61,8 +61,14 @@ func TestIndex(t *testing.T) {
 	if ct := rec.Header().Get("Content-Type"); !strings.HasPrefix(ct, "text/html") {
 		t.Errorf("Content-Type = %q, want text/html", ct)
 	}
-	if !strings.Contains(rec.Body.String(), projectName) {
-		t.Errorf("page does not name the project")
+	page := rec.Body.String()
+	for _, want := range []string{
+		authorName + ", group " + groupName,
+		"Project " + projectNumber + ": " + projectName,
+	} {
+		if !strings.Contains(page, want) {
+			t.Errorf("page does not contain %q", want)
+		}
 	}
 }
 

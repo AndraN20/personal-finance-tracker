@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AndraN20/personal-finance-tracker/internal/store"
+	"atad-project/internal/store"
 )
 
 type Server struct {

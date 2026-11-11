@@ -1,3 +1,3 @@
-module github.com/AndraN20/personal-finance-tracker
+module atad-project
 
-go 1.26
+go 1.27

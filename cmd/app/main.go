@@ -11,12 +11,21 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/AndraN20/personal-finance-tracker/internal/api"
-	"github.com/AndraN20/personal-finance-tracker/internal/buildinfo"
-	"github.com/AndraN20/personal-finance-tracker/internal/store"
+	"atad-project/internal/api"
+	"atad-project/internal/store"
+	"atad-project/internal/version"
 )
 
 func main() {
+	for _, a := range os.Args[1:] {
+		if a == "--version" || a == "-v" {
+			if err := version.WriteJSON(os.Stdout); err != nil {
+				log.Fatalf("version: %v", err)
+			}
+			return
+		}
+	}
+
 	addr := ":8080"
 	if port := os.Getenv("PORT"); port != "" {
 		addr = ":" + port
@@ -32,7 +41,8 @@ func main() {
 	defer stop()
 
 	go func() {
-		log.Printf("%s %s (%s) listening on %s", buildinfo.App, buildinfo.Version, buildinfo.Commit, addr)
+		v := version.Current()
+		log.Printf("%s %s (%s) listening on %s", v.App, v.Version, v.Commit, addr)
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("listen: %v", err)
 		}

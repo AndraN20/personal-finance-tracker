@@ -6,14 +6,15 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AndraN20/personal-finance-tracker/internal/buildinfo"
+	"atad-project/internal/version"
 )
 
-// Shown on GET /.
+// Shown on GET /, in the format the ATAD template uses. Must match atad.json.
 const (
-	authorName  = "Andra Nichifor"
-	groupName   = "DMWD"
-	projectName = "Personal Finance Tracker"
+	authorName    = "Nichifor Andra"
+	groupName     = "DMWD"
+	projectNumber = "2"
+	projectName   = "Personal Finance Tracker"
 )
 
 var indexPage = template.Must(template.New("index").Parse(`<!doctype html>
@@ -24,9 +25,8 @@ var indexPage = template.Must(template.New("index").Parse(`<!doctype html>
 </head>
 <body>
 <h1>{{.App}}</h1>
-<p>{{.Project}}</p>
-<p>Author: {{.Author}}</p>
-<p>Group: {{.Group}}</p>
+<p>{{.Author}}, group {{.Group}}</p>
+<p>Project {{.Number}}: {{.Project}}</p>
 <p>Version {{.Version}} ({{.Commit}})</p>
 </body>
 </html>
@@ -40,23 +40,20 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleVersion(w http.ResponseWriter, r *http.Request) {
-	writeJSON(w, http.StatusOK, map[string]string{
-		"app":      buildinfo.App,
-		"version":  buildinfo.Version,
-		"commit":   buildinfo.Commit,
-		"built_at": buildinfo.BuiltAt,
-	})
+	writeJSON(w, http.StatusOK, version.Current())
 }
 
 func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	v := version.Current()
 	err := indexPage.Execute(w, map[string]string{
-		"App":     buildinfo.App,
+		"App":     v.App,
+		"Number":  projectNumber,
 		"Project": projectName,
 		"Author":  authorName,
 		"Group":   groupName,
-		"Version": buildinfo.Version,
-		"Commit":  buildinfo.Commit,
+		"Version": v.Version,
+		"Commit":  v.Commit,
 	})
 	if err != nil {
 		log.Printf("render index: %v", err)
