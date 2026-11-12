@@ -1,0 +1,11 @@
+{
+  "template": "atad-2026-2027-v1-go",
+  "name": "Nichifor Andra",
+  "group": "DMWD",
+  "student_id": 374823,
+  "email": "andra.nichifor@student.upt.ro",
+  "project": 2,
+  "project_title": "Personal Finance Tracker",
+  "language": "go",
+  "run_command": "docker run --rm -p 8080:8080 ghcr.io/andran20/personal-finance-tracker:latest"
+}
